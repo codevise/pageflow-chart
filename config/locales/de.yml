@@ -2,6 +2,7 @@ de:
   pageflow:
     chart:
       page_type_name: "Diagramm"
+      page_type_category_name: "Interaktiv"
   activerecord:
     attributes:
       pageflow/page:
