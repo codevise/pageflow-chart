@@ -39,7 +39,13 @@ pageflow.chart.IframeEmbeddedView = Backbone.Marionette.View.extend({
 
     if (scrapedSite && scrapedSite.isProcessed()) {
       this.$el.attr('src', scrapedSite.get('html_file_url'));
-      this.$el.attr('data-use-custom-theme', scrapedSite.get('use_custom_theme'));
+
+      if (scrapedSite.get('use_custom_theme')) {
+        this.$el.attr('data-use-custom-theme', 'true');
+      }
+      else {
+        this.$el.removeAttr('data-use-custom-theme');
+      }
     }
     else {
       this.$el.attr('src', '');

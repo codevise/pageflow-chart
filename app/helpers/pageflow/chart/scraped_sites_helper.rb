@@ -17,9 +17,12 @@ module Pageflow
 
         if scraped_site
           data_attributes = {
-            src: scraped_site.html_file_url,
-            use_custom_theme: scraped_site.use_custom_theme
+            src: scraped_site.html_file_url
           }
+
+          if scraped_site.use_custom_theme
+            data_attributes[:use_custom_theme] = true
+          end
         end
 
         content_tag(:iframe, '', IFRAME_ATTRIBUTES.merge(data: data_attributes))
