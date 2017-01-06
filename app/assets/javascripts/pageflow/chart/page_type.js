@@ -1,4 +1,4 @@
-pageflow.pageType.register('chart', _.extend({
+pageflow.react.registerPageTypeWithDefaultBackground('chart', {
 
   prepareNextPageTimeout: 0,
 
@@ -127,10 +127,6 @@ pageflow.pageType.register('chart', _.extend({
     this._loadIframe(pageElement);
   },
 
-  preload: function(pageElement, configuration) {
-    return pageflow.preload.backgroundImage(pageElement.find('.background_image'));
-  },
-
   activating: function(pageElement, configuration) {
     this._loadIframe(pageElement);
     this.resize(pageElement, configuration);
@@ -152,8 +148,6 @@ pageflow.pageType.register('chart', _.extend({
     pageElement.find('h2 .subtitle').text(configuration.get('subtitle') || '');
     pageElement.find('p').html(configuration.get('text') || '');
 
-    this.updateCommonPageCssClasses(pageElement, configuration);
-
     pageElement.find('.shadow').css({
       opacity: configuration.get('gradient_opacity') / 100
     });
@@ -167,11 +161,6 @@ pageflow.pageType.register('chart', _.extend({
 
   embeddedEditorViews: function() {
     return {
-      '.background_image': {
-        view: pageflow.BackgroundImageEmbeddedView,
-        options: {propertyName: 'background_image_id'}
-      },
-
       'iframe': {
         view: pageflow.chart.IframeEmbeddedView,
         options: {propertyName: 'scraped_site_id'}
@@ -188,4 +177,4 @@ pageflow.pageType.register('chart', _.extend({
       }
     });
   }
-}, pageflow.commonPageCssClasses));
+});

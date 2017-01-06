@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "pageflow", "~> 0.10"
+  spec.add_runtime_dependency "pageflow", "~> 0.12.pre"
   spec.add_runtime_dependency "nokogiri"
   spec.add_runtime_dependency "paperclip", "~> 4.2"
   spec.add_runtime_dependency "state_machine"

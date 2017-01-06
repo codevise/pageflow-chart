@@ -14,7 +14,7 @@ pageflow.ConfigurationEditorView.register('chart', {
       });
       this.view(pageflow.chart.DatawrapperAdView);
       this.input('full_width', pageflow.CheckBoxInputView);
-      this.input('background_image_id', pageflow.FileInputView, {collection: pageflow.imageFiles});
+      this.group('background');
       this.input('thumbnail_image_id', pageflow.FileInputView, {
         collection: pageflow.imageFiles,
         imagePositioning: false
