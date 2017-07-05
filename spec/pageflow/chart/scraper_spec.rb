@@ -8,7 +8,9 @@ module Pageflow
           html = <<-HTML
             <!DOCTYPE html>
             <html>
-              <head></head>
+              <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+              </head>
               <body>contents</body>
             </html>
           HTML
@@ -57,7 +59,9 @@ module Pageflow
           html = <<-HTML
             <!DOCTYPE html>
             <html>
-              <head></head>
+              <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+              </head>
               <body>
                 <script id="good">window.ok = true;</script>
                 <script id="bad">alert();</script>
@@ -74,7 +78,9 @@ module Pageflow
           html = <<-HTML
             <!DOCTYPE html>
             <html>
-              <head></head>
+              <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+              </head>
               <body>
                 <div id="bad" class="noscript"></div>
                 <div id="good"></div>

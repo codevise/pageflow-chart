@@ -67,12 +67,13 @@ module Pageflow
       end
 
       def combine_script_tags_in_head
-        script_tags_in_head.each(&:remove)
+        script_src_tags_in_head.each(&:remove)
 
-        all_script_tag = Nokogiri::XML::Node.new('script', document)
-        all_script_tag[:src] = 'all.js'
-        all_script_tag[:type] = 'text/javascript'
-        document.at_css('head') << all_script_tag
+        all_script_src_tag = Nokogiri::XML::Node.new('script', document)
+        all_script_src_tag[:src] = 'all.js'
+        all_script_src_tag[:type] = 'text/javascript'
+        document.at_css('head').children.first
+                .add_previous_sibling(all_script_src_tag)
       end
 
       def combine_css_link_tags
@@ -86,14 +87,14 @@ module Pageflow
       end
 
       def filtered_script_tags_in_head
-        script_tags_in_head.reject do |tag|
+        script_src_tags_in_head.reject do |tag|
           options.fetch(:head_script_blacklist, []).any? do |regexp|
             tag[:src] =~ regexp
           end
         end
       end
 
-      def script_tags_in_head
+      def script_src_tags_in_head
         document.css('head script[src]')
       end
 
