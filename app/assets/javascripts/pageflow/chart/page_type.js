@@ -17,24 +17,39 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', {
   },
 
   resize: function(pageElement, configuration) {
-    var iframeWrapper = pageElement.find('.iframeWrapper'),
-        pageHeader = pageElement.find('.page_header'),
-        scroller = pageElement.find('.scroller'),
-        fullWidth = configuration.full_width,
-        widescreened = pageElement.width() > 1430;
+    var iframeWrapper = pageElement.find('.iframeWrapper');
+    var pageHeader = pageElement.find('.page_header');
+    var pageTitle = pageHeader.find('.title');
+    var scroller = pageElement.find('.scroller');
+    var fullWidth = configuration.full_width;
 
-    if (fullWidth) {
-      widescreened = false;
-    }
+    pageTitle.toggleClass('title-for_split_layout', !fullWidth);
 
-    iframeWrapper.toggleClass('widescreened', widescreened);
+    var splitLayout = this.wideEnoughForSplitLayout(pageElement) && !fullWidth;
 
-    if (widescreened) {
+    iframeWrapper.toggleClass('widescreened', splitLayout);
+
+    if (splitLayout) {
       iframeWrapper.insertAfter(scroller);
     }
     else {
       iframeWrapper.insertAfter(pageHeader);
     }
+  },
+
+  wideEnoughForSplitLayout: function(pageElement) {
+    var pageTitle = pageElement.find('.page_header .title');
+
+    var pageTitleClientRect = pageTitle[0].getBoundingClientRect();
+    var pageClientRect = pageElement[0].getBoundingClientRect();
+
+    var spaceRightFromTitle = pageClientRect.right - pageTitleClientRect.right;
+    var spaceLeftFromTitle = pageTitleClientRect.left - pageClientRect.left;
+    var leftPositionedEmbedWidth = pageClientRect.width * 0.51;
+    var rightPositionedEmbedWidth = pageClientRect.width * 0.55;
+
+    return (spaceRightFromTitle >= rightPositionedEmbedWidth ||
+            spaceLeftFromTitle >= leftPositionedEmbedWidth);
   },
 
   customizeLayout: function(pageElement, configuration) {
