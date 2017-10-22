@@ -17,6 +17,19 @@ module Pageflow
           expect(result).to eq("aaa")
         end
 
+        it 'ignores HTTP response 404' do
+          downloader = Downloader.new
+          result = ''
+
+          stub_request(:get, "http://example.com/a").to_return(status: 404, body: 'aaa')
+
+          downloader.load('http://example.com/a') do |io|
+            result = io.read
+          end
+
+          expect(result).to eq("")
+        end
+
         it 'derives protocol from base_url' do
           downloader = Downloader.new(base_url: 'http://someother.com')
           result = ''

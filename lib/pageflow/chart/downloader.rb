@@ -12,12 +12,11 @@ module Pageflow
 
       def load(url)
         file = open(make_absolute(url))
-
-        begin
-          yield(file)
-        ensure
-          file.close
-        end
+        yield(file)
+      rescue OpenURI::HTTPError => exception
+        Rails.logger.error "Exception loading url #{url}: #{exception.message}"
+      ensure
+        file.close if file
       end
 
       def load_all(urls, options = {})
