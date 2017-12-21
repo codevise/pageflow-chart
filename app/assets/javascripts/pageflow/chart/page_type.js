@@ -25,7 +25,7 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', {
 
     pageElement.toggleClass('page-with_split_layout', !fullWidth);
 
-    var splitLayout = this.wideEnoughForSplitLayout(pageElement) && !fullWidth;
+    var splitLayout = pageflow.pageSplitLayout.pageIsWideEnough(pageElement) && !fullWidth;
 
     iframeWrapper.toggleClass('widescreened', splitLayout);
 
@@ -35,21 +35,6 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', {
     else {
       iframeWrapper.insertAfter(pageHeader);
     }
-  },
-
-  wideEnoughForSplitLayout: function(pageElement) {
-    var pageTitle = pageElement.find('.page_header .title');
-
-    var pageTitleClientRect = pageTitle[0].getBoundingClientRect();
-    var pageClientRect = pageElement[0].getBoundingClientRect();
-
-    var spaceRightFromTitle = pageClientRect.right - pageTitleClientRect.right;
-    var spaceLeftFromTitle = pageTitleClientRect.left - pageClientRect.left;
-    var leftPositionedEmbedWidth = pageClientRect.width * 0.51;
-    var rightPositionedEmbedWidth = pageClientRect.width * 0.55;
-
-    return (spaceRightFromTitle >= rightPositionedEmbedWidth ||
-            spaceLeftFromTitle >= leftPositionedEmbedWidth);
   },
 
   customizeLayout: function(pageElement, configuration) {
