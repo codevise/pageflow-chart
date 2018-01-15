@@ -82,6 +82,43 @@ Example:
 
 Also see `lib/pageflow/chart/configuration.rb` for the additional options.
 
+## Uninstallation
+
+In addition to backtracking the installation steps, you need to update all
+existing pages that have the `chart` template.
+
+* Remove `pageflow-chart` from `Gemfile`
+* Run `bundle install`
+* Remove `pageflow-chart` from the asset pipeline:
+
+    pageflow/application.js
+    pageflow/editor.js
+    pageflow/application.scss
+    pageflow/editor.scss
+    pageflow/themes/$name.scss
+
+* Remove `config.page_types.register(Pageflow::Chart.page_type)` from `config/initializers/pageflow.rb`
+* Remove `config/initializers/pageflow_chart.rb`
+* Remove the mount from `config/routes.rb`
+
+There might still be pages in the database that used the `chart` template. You
+will need to either remove these pages, or update them to a template that is
+still in use. These pages are not usable otherwise.
+
+**Update the template to `background_image`:**
+
+``` ruby
+$ rails console
+irb> Pageflow::Page.where(template: 'chart').update_all(template: 'background_image')
+```
+
+**Or delete these pages if you have no use for them:**
+
+``` ruby
+$ rails console
+irb> Pageflow::Page.where(template: 'chart').destroy_all
+```
+
 ## Troubleshooting
 
 If you run into problems while installing the page type, please also
