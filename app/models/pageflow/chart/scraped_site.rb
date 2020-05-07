@@ -4,11 +4,13 @@ module Pageflow
       include Pageflow::ReusableFile
 
       has_attached_file :javascript_file, Chart.config.paperclip_options(extension: 'js')
+      has_attached_file :javascript_body_file, Chart.config.paperclip_options(basename: 'all_body', extension: 'js')
       has_attached_file :stylesheet_file, Chart.config.paperclip_options(extension: 'css')
       has_attached_file :html_file, Chart.config.paperclip_options(extension: 'html')
       has_attached_file :csv_file, Chart.config.paperclip_options(basename: 'data', extension: 'csv')
 
       do_not_validate_attachment_file_type(:javascript_file)
+      do_not_validate_attachment_file_type(:javascript_body_file)
       do_not_validate_attachment_file_type(:stylesheet_file)
       do_not_validate_attachment_file_type(:html_file)
       do_not_validate_attachment_file_type(:csv_file)
@@ -85,7 +87,7 @@ module Pageflow
       end
 
       def attachments_for_export
-        [javascript_file, stylesheet_file, html_file, csv_file]
+        [javascript_file, javascript_body_file, stylesheet_file, html_file, csv_file]
       end
     end
   end

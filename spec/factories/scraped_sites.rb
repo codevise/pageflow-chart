@@ -8,6 +8,7 @@ module Pageflow
           state { 'processed' }
 
           javascript_file { File.open(Engine.root.join('spec', 'fixtures', 'all.js')) }
+          javascript_body_file { File.open(Engine.root.join('spec', 'fixtures', 'all_body.js')) }
           stylesheet_file { File.open(Engine.root.join('spec', 'fixtures', 'all.css')) }
           html_file { File.open(Engine.root.join('spec', 'fixtures', 'index.html')) }
           csv_file { File.open(Engine.root.join('spec', 'fixtures', 'data.csv')) }
