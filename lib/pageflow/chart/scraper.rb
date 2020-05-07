@@ -3,7 +3,7 @@ require 'nokogiri'
 module Pageflow
   module Chart
     class Scraper
-      attr_reader :document, :options, :javascript_urls, :stylesheet_urls
+      attr_reader :document, :options, :javascript_urls, :javascript_body_urls, :stylesheet_urls
 
       def initialize(html, options = {})
         @document = Nokogiri::HTML(html)
@@ -24,11 +24,18 @@ module Pageflow
 
       def parse
         parse_javascript_urls
+        parse_javascript_body_urls
         parse_stylesheet_urls
       end
 
       def parse_javascript_urls
         @javascript_urls = filtered_script_tags_in_head.map do |tag|
+          tag[:src]
+        end
+      end
+
+      def parse_javascript_body_urls
+        @javascript_body_urls = filtered_script_tags_in_body.map do |tag|
           tag[:src]
         end
       end
@@ -43,6 +50,7 @@ module Pageflow
         filter_inline_scripts
         filter_by_selectors
         combine_script_tags_in_head
+        combine_script_tags_in_body
         combine_css_link_tags
       end
 
@@ -81,6 +89,21 @@ module Pageflow
         script_tags_to_remove.each(&:remove)
       end
 
+      def combine_script_tags_in_body
+        script_tags_to_remove = script_src_tags_in_body
+        return if script_tags_to_remove.empty?
+
+        all_body_script_src_tag = Nokogiri::XML::Node.new('script', document)
+        all_body_script_src_tag[:src] = 'all_body.js'
+        all_body_script_src_tag[:type] = 'text/javascript'
+
+        script_tags_to_remove
+          .first
+          .add_previous_sibling(all_body_script_src_tag)
+
+        script_tags_to_remove.each(&:remove)
+      end
+
       def combine_css_link_tags
         css_link_tags.each(&:remove)
 
@@ -101,6 +124,18 @@ module Pageflow
 
       def script_src_tags_in_head
         document.css('head script[src]')
+      end
+
+      def filtered_script_tags_in_body
+        script_src_tags_in_body.reject do |tag|
+          options.fetch(:body_script_blacklist, []).any? do |regexp|
+            tag[:src] =~ regexp
+          end
+        end
+      end
+
+      def script_src_tags_in_body
+        document.css('body script[src]')
       end
 
       def css_link_tags

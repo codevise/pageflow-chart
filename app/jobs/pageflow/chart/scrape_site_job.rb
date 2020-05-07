@@ -24,6 +24,13 @@ module Pageflow
             scraped_site.javascript_file = javascript_file
           end
 
+          downloader.load_all(scraper.javascript_body_urls,
+                              extension: '.js',
+                              before_each: begin_try_catch,
+                              after_each: end_try_catch) do |javascript_body_file|
+            scraped_site.javascript_body_file = javascript_body_file
+          end
+
           downloader.load_all(scraper.stylesheet_urls,
                               extension: '.css',
                               separator: "\n;") do |stylesheet_file|
