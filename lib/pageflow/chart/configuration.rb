@@ -22,6 +22,7 @@ module Pageflow
       #
       # @param [Hash] opts
       # @option opts [Array<Regexp>] :head_script_blacklist Script tags in page head are ignored if they match any of this list of regexes.
+      # @option opts [Array<Regexp>] :body_script_blacklist Script tags in page body are ignored if they match any of this list of regexes.
       # @option opts [Array<Regexp>] :inline_script_blacklist Inline script tags are ignored if they match any of this list of regexes.
       # @option opts [Array<String>] :selector_blacklist HTML-elements matched by selectors in this list will not be scraped.
       # @return [Hash]
@@ -55,6 +56,7 @@ module Pageflow
       def initialize
         @scraper_options = {
           head_script_blacklist: [/piwik/],
+          body_script_blacklist: [/piwik/],
           inline_script_blacklist: [/piwik/],
           selector_blacklist: ['body .noscript']
         }

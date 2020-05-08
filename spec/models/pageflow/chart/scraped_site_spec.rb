@@ -31,7 +31,7 @@ module Pageflow::Chart
       scraped_site = ScrapedSite.new(url: 'http://example.com/foo/index.html')
 
       expect(scraped_site.attachments_for_export.map(&:name))
-        .to eq(%i[javascript_file stylesheet_file html_file csv_file])
+        .to eq(%i[javascript_file javascript_body_file stylesheet_file html_file csv_file])
     end
 
     describe '#publish!' do
