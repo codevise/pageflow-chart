@@ -175,7 +175,7 @@ module Pageflow
       end
 
       describe '#javascript_urls' do
-        describe 'script in head' do
+        describe 'scripts in head' do
           it 'returns list of urls to javascript files' do
             html = <<-HTML
             <!DOCTYPE html>
@@ -190,7 +190,7 @@ module Pageflow
             HTML
             scraper = Scraper.new(html)
 
-            expect(scraper.javascript_urls).to eq(['/some.js', '/other.js'])
+            expect(scraper.javascript_urls_in_head).to eq(['/some.js', '/other.js'])
           end
 
           it 'filters by blacklist' do
@@ -207,7 +207,7 @@ module Pageflow
             HTML
             scraper = Scraper.new(html, head_script_blacklist: [/piwik/])
 
-            expect(scraper.javascript_urls).to eq(['/some.js'])
+            expect(scraper.javascript_urls_in_head).to eq(['/some.js'])
           end
 
           it 'ignores inline scripts in head' do
@@ -223,7 +223,7 @@ module Pageflow
             HTML
             scraper = Scraper.new(html)
 
-            expect(scraper.javascript_urls).to eq([])
+            expect(scraper.javascript_urls_in_head).to eq([])
           end
 
           it 'ignores scripts in body' do
@@ -239,7 +239,7 @@ module Pageflow
             HTML
             scraper = Scraper.new(html)
 
-            expect(scraper.javascript_urls).to eq([])
+            expect(scraper.javascript_urls_in_head).to eq([])
           end
         end
 
@@ -257,7 +257,7 @@ module Pageflow
             HTML
             scraper = Scraper.new(html)
 
-            expect(scraper.javascript_body_urls).to eq([])
+            expect(scraper.javascript_urls_in_body).to eq([])
           end
 
           it 'returns list of urls to javascript files' do
@@ -274,7 +274,7 @@ module Pageflow
             HTML
             scraper = Scraper.new(html)
 
-            expect(scraper.javascript_body_urls).to eq(['/some.js', '/other.js'])
+            expect(scraper.javascript_urls_in_body).to eq(['/some.js', '/other.js'])
           end
 
           it 'filters by blacklist' do
@@ -291,7 +291,7 @@ module Pageflow
             HTML
             scraper = Scraper.new(html, body_script_blacklist: [/piwik/])
 
-            expect(scraper.javascript_body_urls).to eq(['/some.js'])
+            expect(scraper.javascript_urls_in_body).to eq(['/some.js'])
           end
 
           it 'ignores inline scripts in body' do
@@ -307,7 +307,7 @@ module Pageflow
             HTML
             scraper = Scraper.new(html)
 
-            expect(scraper.javascript_body_urls).to eq([])
+            expect(scraper.javascript_urls_in_body).to eq([])
           end
         end
       end

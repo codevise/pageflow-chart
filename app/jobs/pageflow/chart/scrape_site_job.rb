@@ -17,14 +17,14 @@ module Pageflow
             content_type: 'text/html'
           )
 
-          downloader.load_all(scraper.javascript_urls,
+          downloader.load_all(scraper.javascript_urls_in_head,
                               extension: '.js',
                               before_each: begin_try_catch,
-                              after_each: end_try_catch) do |javascript_file|
-            scraped_site.javascript_file = javascript_file
+                              after_each: end_try_catch) do |javascript_head_file|
+            scraped_site.javascript_file = javascript_head_file
           end
 
-          downloader.load_all(scraper.javascript_body_urls,
+          downloader.load_all(scraper.javascript_urls_in_body,
                               extension: '.js',
                               before_each: begin_try_catch,
                               after_each: end_try_catch) do |javascript_body_file|

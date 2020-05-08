@@ -3,7 +3,11 @@ require 'nokogiri'
 module Pageflow
   module Chart
     class Scraper
-      attr_reader :document, :options, :javascript_urls, :javascript_body_urls, :stylesheet_urls
+      attr_reader :document,
+                  :options,
+                  :javascript_urls_in_head,
+                  :javascript_urls_in_body,
+                  :stylesheet_urls
 
       def initialize(html, options = {})
         @document = Nokogiri::HTML(html)
@@ -23,20 +27,20 @@ module Pageflow
       private
 
       def parse
-        parse_javascript_urls
-        parse_javascript_body_urls
+        parse_javascript_urls(:head)
+        parse_javascript_urls(:body)
         parse_stylesheet_urls
       end
 
-      def parse_javascript_urls
-        @javascript_urls = filtered_script_tags_in_head.map do |tag|
+      def parse_javascript_urls(container)
+        script_tags = filtered_script_tags_in(container).map do |tag|
           tag[:src]
         end
-      end
 
-      def parse_javascript_body_urls
-        @javascript_body_urls = filtered_script_tags_in_body.map do |tag|
-          tag[:src]
+        if container.eql?(:head)
+          @javascript_urls_in_head = script_tags
+        else
+          @javascript_urls_in_body = script_tags
         end
       end
 
@@ -49,8 +53,8 @@ module Pageflow
       def rewrite
         filter_inline_scripts
         filter_by_selectors
-        combine_script_tags_in_head
-        combine_script_tags_in_body
+        combine_script_tags_in(:head)
+        combine_script_tags_in(:body)
         combine_css_link_tags
       end
 
@@ -74,32 +78,17 @@ module Pageflow
         end
       end
 
-      def combine_script_tags_in_head
-        script_tags_to_remove = script_src_tags_in_head
+      def combine_script_tags_in(container)
+        script_tags_to_remove = script_src_tags_in(container)
         return if script_tags_to_remove.empty?
 
         all_script_src_tag = Nokogiri::XML::Node.new('script', document)
-        all_script_src_tag[:src] = 'all.js'
+        all_script_src_tag[:src] = container.eql?(:head) ? 'all.js' : 'all_body.js'
         all_script_src_tag[:type] = 'text/javascript'
 
         script_tags_to_remove
           .first
           .add_previous_sibling(all_script_src_tag)
-
-        script_tags_to_remove.each(&:remove)
-      end
-
-      def combine_script_tags_in_body
-        script_tags_to_remove = script_src_tags_in_body
-        return if script_tags_to_remove.empty?
-
-        all_body_script_src_tag = Nokogiri::XML::Node.new('script', document)
-        all_body_script_src_tag[:src] = 'all_body.js'
-        all_body_script_src_tag[:type] = 'text/javascript'
-
-        script_tags_to_remove
-          .first
-          .add_previous_sibling(all_body_script_src_tag)
 
         script_tags_to_remove.each(&:remove)
       end
@@ -114,28 +103,16 @@ module Pageflow
         document.at_css('head') << all_css_link_tag
       end
 
-      def filtered_script_tags_in_head
-        script_src_tags_in_head.reject do |tag|
-          options.fetch(:head_script_blacklist, []).any? do |regexp|
+      def filtered_script_tags_in(container)
+        script_src_tags_in(container).reject do |tag|
+          options.fetch("#{container}_script_blacklist".to_sym, []).any? do |regexp|
             tag[:src] =~ regexp
           end
         end
       end
 
-      def script_src_tags_in_head
-        document.css('head script[src]')
-      end
-
-      def filtered_script_tags_in_body
-        script_src_tags_in_body.reject do |tag|
-          options.fetch(:body_script_blacklist, []).any? do |regexp|
-            tag[:src] =~ regexp
-          end
-        end
-      end
-
-      def script_src_tags_in_body
-        document.css('body script[src]')
+      def script_src_tags_in(container)
+        document.css("#{container} script[src]")
       end
 
       def css_link_tags
