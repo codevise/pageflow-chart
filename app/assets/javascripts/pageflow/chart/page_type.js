@@ -1,5 +1,7 @@
 pageflow.pageType.registerInitializer('chart', function() {
-  pageflow.chart.consent.ensureVendorRegistered();
+  pageflow.chart.consent.ensureVendorRegistered({
+    skip: !pageflow.features.isEnabled('chart_embed_opt_in')
+  });
 });
 
 pageflow.react.registerPageTypeWithDefaultBackground('chart', _.extend({
@@ -7,6 +9,10 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', _.extend({
 
   enhance: function(pageElement, configuration) {
     pageElement.thirdPartyEmbedConsent();
+
+    if (!pageflow.features.isEnabled('chart_embed_opt_in')) {
+      pageElement.find('.opt_out_wrapper').hide();
+    }
 
     var scroller = pageElement.find('.scroller');
 

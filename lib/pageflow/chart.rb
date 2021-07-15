@@ -10,6 +10,10 @@ module Pageflow
       block.call(config)
     end
 
+    def self.plugin
+      Chart::Plugin.new
+    end
+
     def self.page_type
       Chart::PageType.new
     end

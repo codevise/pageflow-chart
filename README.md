@@ -17,10 +17,10 @@ Mount the engine:
     # config/routes.rb
     mount Pageflow::Chart::Engine, at: '/chart'
 
-Register the page type:
+Register the plugin:
 
     # config/initializers/pageflow.rb
-    config.page_types.register(Pageflow::Chart.page_type)
+    config.plugin(Pageflow::Chart.plugin)
 
 Include javascript/stylesheets:
 
