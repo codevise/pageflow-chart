@@ -52,9 +52,11 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', _.extend({
     var that = this;
     var iframe = pageElement.find('iframe');
     var scroller = pageElement.find('.scroller');
-    var iframeOverlay = pageElement.find('.iframe_overlay');
 
-    if(!this.layoutCustomized) {
+    if (!iframe.data('customizeLayout')) {
+      pageElement.find('.iframeWrapper').addClass('active');
+    }
+    else if(!this.layoutCustomized) {
       iframe.load(function() {
         $(this).contents().find('.fs-btn').css('display','none');
         $(this).contents().find('body').addClass($("[data-theme]").attr('data-theme'));
@@ -91,63 +93,21 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', _.extend({
     head.append('<link rel="stylesheet" type="text/css" href="' + path + '">');
   },
 
-  _initEventSimulation: function(element, iframe, wrapper) {
-    element.on('click', function(event) {
-      var contentElement = iframe.contents()[0];
-
-      element.css('display', 'none');
-
-      if (contentElement && event) {
-        var offset = iframe.offset();
-        var options = $.extend({}, event, {
-          screenX: event.screenX - offset.left,
-          screenY: event.screenY - offset.top,
-          clientX: event.clientX - offset.left,
-          clientY: event.clientY - offset.top,
-        });
-
-        var lastElement = $(contentElement.elementFromPoint(event.pageX - offset.left,
-                                                            event.pageY - offset.top));
-
-        lastElement.simulate('mousedown', options);
-        lastElement.simulate('mousemove', options);
-        lastElement.simulate('click', options);
-        lastElement.simulate('mouseup', options);
-
-        element.css('cursor', lastElement.css('cursor'));
-      }
-
-      element.css('display', 'block');
-
-      event.preventDefault();
-      event.stopPropagation();
-    });
-
-    iframe.load(function() {
-      iframe.contents().find('*').on('mousemove', function() {
-        wrapper.addClass('hovering');
-      });
-
-      iframe.contents().on('mouseout', function() {
-        wrapper.removeClass('hovering');
-      });
-    });
-  },
-
   prepare: function(pageElement, configuration) {
     this._loadIframe(pageElement);
   },
 
   activating: function(pageElement, configuration) {
+    this._listenToHeightMessage(pageElement);
     this._loadIframe(pageElement);
     this.resize(pageElement, configuration);
     this.customizeLayout(pageElement, configuration);
-    this._initEventSimulation(pageElement.find('.iframe_overlay'), pageElement.find('iframe'), pageElement.find('.iframeWrapper'));
   },
 
   activated: function(pageElement, configuration) {},
 
   deactivating: function(pageElement, configuration) {
+    this._stopListeningToHeightMessages();
     $('body').removeClass('bigScreen');
   },
 
@@ -170,8 +130,7 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', _.extend({
   embeddedEditorViews: function() {
     return {
       'iframe': {
-        view: pageflow.chart.IframeEmbeddedView,
-        options: {propertyName: 'scraped_site_id'}
+        view: pageflow.chart.IframeEmbeddedView
       }
     };
   },
@@ -194,5 +153,33 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', _.extend({
         });
       }
     });
+  },
+
+  _listenToHeightMessage: function(pageElement) {
+    this._messageListener = this._messageListener || function(event) {
+      if (typeof event.data['datawrapper-height'] !== 'undefined') {
+        var iframe = pageElement.find('iframe')
+
+        for (var chartId in event.data['datawrapper-height']) {
+          if (iframe.attr('src').indexOf(chartId) > -1) {
+            var iframeWrapper = pageElement.find('.iframeWrapper')
+            var height = event.data['datawrapper-height'][chartId] + 'px';
+
+            if (iframeWrapper.css('height') !== height) {
+              var scroller = pageElement.find('.scroller');
+
+              iframeWrapper.css('height', height);
+              scroller.scroller('refresh');
+            }
+          }
+        }
+      }
+    }
+
+    window.addEventListener('message', this._messageListener);
+  },
+
+  _stopListeningToHeightMessages: function() {
+    window.removeEventListener('message', this._messageListener);
   }
 }, pageflow.defaultPageContent));

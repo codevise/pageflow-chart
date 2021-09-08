@@ -62,18 +62,6 @@
       }
     }
 
-    .iframe_overlay {
-      .has_mobile_platform & {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: all;
-        background-color: transparent;
-      }
-    }
-
     .text_position_right &.widescreened {
       @include position-end(auto);
       @include position-start(8%);
@@ -102,19 +90,18 @@
       }
     }
 
-    &:hover .bigscreen_toggler, &.hovering .bigscreen_toggler {
+    &:hover .bigscreen_toggler {
       opacity: 1;
     }
 
     .bigScreen & {
       position: absolute;
       width: 86% !important;
-      height: 87%;
       top: 10%;
       left: 5% !important;
       z-index: 201;
       margin-top: 0 !important;
-      max-height: none !important;
+      max-height: 84% !important;
 
       .bigscreen_toggler {
         background-position: -25px 0;
