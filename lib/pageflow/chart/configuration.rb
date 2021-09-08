@@ -64,9 +64,10 @@ module Pageflow
         @paperclip_base_path = ':pageflow_s3_root'
         @scraped_sites_root_url = nil
         @supported_hosts = [
-          'http://cf.datawrapper.de',
-          'http://datawrapper.dwcdn.de',
-          'http://datawrapper.dwcdn.net'
+          'cf.datawrapper.de',
+          'charts.datawrapper.de',
+          'datawrapper.dwcdn.de',
+          'datawrapper.dwcdn.net'
         ]
         @use_custom_theme = false
         @datawrapper_themes_with_transparent_background_support = ['pageflow']
