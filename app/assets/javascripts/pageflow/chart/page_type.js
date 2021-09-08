@@ -98,6 +98,7 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', _.extend({
   },
 
   activating: function(pageElement, configuration) {
+    this._listenToHeightMessage(pageElement);
     this._loadIframe(pageElement);
     this.resize(pageElement, configuration);
     this.customizeLayout(pageElement, configuration);
@@ -106,6 +107,7 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', _.extend({
   activated: function(pageElement, configuration) {},
 
   deactivating: function(pageElement, configuration) {
+    this._stopListeningToHeightMessages();
     $('body').removeClass('bigScreen');
   },
 
@@ -151,5 +153,33 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', _.extend({
         });
       }
     });
+  },
+
+  _listenToHeightMessage: function(pageElement) {
+    this._messageListener = this._messageListener || function(event) {
+      if (typeof event.data['datawrapper-height'] !== 'undefined') {
+        var iframe = pageElement.find('iframe')
+
+        for (var chartId in event.data['datawrapper-height']) {
+          if (iframe.attr('src').indexOf(chartId) > -1) {
+            var iframeWrapper = pageElement.find('.iframeWrapper')
+            var height = event.data['datawrapper-height'][chartId] + 'px';
+
+            if (iframeWrapper.css('height') !== height) {
+              var scroller = pageElement.find('.scroller');
+
+              iframeWrapper.css('height', height);
+              scroller.scroller('refresh');
+            }
+          }
+        }
+      }
+    }
+
+    window.addEventListener('message', this._messageListener);
+  },
+
+  _stopListeningToHeightMessages: function() {
+    window.removeEventListener('message', this._messageListener);
   }
 }, pageflow.defaultPageContent));

@@ -97,12 +97,11 @@
     .bigScreen & {
       position: absolute;
       width: 86% !important;
-      height: 87%;
       top: 10%;
       left: 5% !important;
       z-index: 201;
       margin-top: 0 !important;
-      max-height: none !important;
+      max-height: 84% !important;
 
       .bigscreen_toggler {
         background-position: -25px 0;
