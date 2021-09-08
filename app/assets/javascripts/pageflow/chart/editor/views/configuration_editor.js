@@ -7,14 +7,13 @@ pageflow.ConfigurationEditorView.register('chart', {
     });
 
     this.tab('files', function() {
-      this.input('scraped_site_id', pageflow.chart.ScrapedUrlInputView, {
-        supportedHosts: supportedHosts,
+      this.input('chart_url', pageflow.UrlInputView, {
         displayPropertyName: 'display_scraped_site_url',
-        required: true
+        supportedHosts: supportedHosts,
+        required: true,
+        permitHttps: true
       });
-      this.input('scraped_site_id', pageflow.FileProcessingStateDisplayView, {
-        collection: 'pageflow_chart_scraped_sites'
-      });
+
       this.view(pageflow.chart.DatawrapperAdView);
       this.input('full_width', pageflow.CheckBoxInputView);
       this.group('background');

@@ -52,9 +52,11 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', _.extend({
     var that = this;
     var iframe = pageElement.find('iframe');
     var scroller = pageElement.find('.scroller');
-    var iframeOverlay = pageElement.find('.iframe_overlay');
 
-    if(!this.layoutCustomized) {
+    if (!iframe.data('customizeLayout')) {
+      pageElement.find('.iframeWrapper').addClass('active');
+    }
+    else if(!this.layoutCustomized) {
       iframe.load(function() {
         $(this).contents().find('.fs-btn').css('display','none');
         $(this).contents().find('body').addClass($("[data-theme]").attr('data-theme'));
@@ -126,8 +128,7 @@ pageflow.react.registerPageTypeWithDefaultBackground('chart', _.extend({
   embeddedEditorViews: function() {
     return {
       'iframe': {
-        view: pageflow.chart.IframeEmbeddedView,
-        options: {propertyName: 'scraped_site_id'}
+        view: pageflow.chart.IframeEmbeddedView
       }
     };
   },
