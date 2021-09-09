@@ -24,7 +24,13 @@ pageflow.chart.IframeEmbeddedView = Backbone.Marionette.View.extend({
   },
 
   updateChartUrl: function() {
-    this.$el.attr('src', this.model.get('chart_url'));
+    var url = this.model.get('chart_url');
+
+    if (url) {
+      url = url.replace(/^https?:/, '');
+    }
+
+    this.$el.attr('src', url);
     this.$el.removeAttr('data-use-custom-theme');
     this.$el.removeAttr('data-customize-layout');
   },

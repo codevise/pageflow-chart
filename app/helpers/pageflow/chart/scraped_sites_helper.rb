@@ -18,7 +18,7 @@ module Pageflow
 
         if configuration['chart_url']
           data_attributes = {
-            src: configuration['chart_url']
+            src: configuration['chart_url'].gsub(/^https?:/, '')
           }
         elsif (scraped_site = find_scraped_site(configuration))
           data_attributes = {

@@ -43,7 +43,7 @@ module Pageflow
         html = scraped_site_iframe('chart_url' => 'https://example.com/chart')
 
         iframe = Capybara.string(html).find('iframe')
-        expect(iframe['data-src']).to eq('https://example.com/chart')
+        expect(iframe['data-src']).to eq('//example.com/chart')
       end
 
       it 'renders no data-custom-theme attribute for chart_url' do
