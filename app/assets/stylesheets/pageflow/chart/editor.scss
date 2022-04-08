@@ -6,8 +6,6 @@
   @include clearfix;
 
   input {
-    @include button('simple', #6AACF7);
-    padding: 3px 10px;
-    width: auto;
+    @include simple-button("primary");
   }
 }
