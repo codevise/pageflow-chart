@@ -17,6 +17,8 @@ en:
           menu_item: Chart
           text: "# Chart\n\nIntegration of a Datawrapper-Diagram\n\nHere you can add animated infographics to your Pageflow. The diagram is embedded into a background-picture/video and text. To enlarge the graphic you simply have to click on it. \n\nBut first of all you have to create your graphic externally and generate a link. You can find examples and requirements for this under www.datawrapper.de.\n\nNote that Datawrapper offers a special layout option for charts that shall be embedded into a Pageflow: In the \"Visualize\" step of the chart creation wizard, click the \"Design\" tab and select the \"Pageflow\" layout. That way a color scheme is used which complements Pageflow's look.\n\nExamples of application: statistics, diagrams, numbers & facts"
       page_attributes:
+        chart_url:
+          label: Chart URL
         full_width:
           inline_help: Extends the chart to use the maximum width available.
           label: Use full width
@@ -25,3 +27,5 @@ en:
       page_type_category_name: Data and Charts
       page_type_description: Embedded Datawrapper chart
       page_type_name: Chart
+    chart_embed_opt_in:
+      feature_name: Opt-in for Datawrapper embeds

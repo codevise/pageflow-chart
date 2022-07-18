@@ -31,6 +31,8 @@ de:
 
             Typische Anwendungsbeispiele: Statistiken, Diagramme, Zahlen&Fakten
       page_attributes:
+        chart_url:
+          label: Diagramm URL
         full_width:
           inline_help: Verbreitert das Diagramm, so dass es die maximal verfügbare Breite nutzt.
           label: Gesamte Breite nutzen
@@ -39,3 +41,5 @@ de:
       page_type_category_name: Daten und Diagramme
       page_type_description: Einbindung von Diagrammen, die mit Datawrapper erstellt wurden
       page_type_name: Diagramm
+    chart_embed_opt_in:
+      feature_name: Opt-In für Datawrapper Embeds
