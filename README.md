@@ -1,7 +1,7 @@
 # Pageflow Chart
 
 [![Gem Version](https://badge.fury.io/rb/pageflow-chart.svg)](http://badge.fury.io/rb/pageflow-chart)
-[![Build Status](https://travis-ci.org/codevise/pageflow-chart.svg?branch=master)](https://travis-ci.org/codevise/pageflow-chart)
+[![Build Status](https://github.com/codevise/pageflow-chart/workflows/tests/badge.svg)](https://github.com/codevise/pageflow-chart/actions)
 
 Page type showing scraped svg diagramms from Datawrapper.
 
