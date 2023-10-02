@@ -13,7 +13,7 @@ module Pageflow
       end
 
       def load(url, raise_on_http_error: false)
-        file = open(make_absolute(url))
+        file = make_absolute(url).open
         yield(file)
       rescue OpenURI::HTTPError => exception
         Rails.logger.error "Exception loading url #{url}: #{exception.message}"

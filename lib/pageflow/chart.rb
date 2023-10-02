@@ -1,4 +1,6 @@
 require 'pageflow/chart/engine'
+require 'pageflow/chart/configuration'
+require 'pageflow/chart/version'
 
 module Pageflow
   module Chart
