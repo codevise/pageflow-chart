@@ -10,7 +10,7 @@ module Pageflow
       class NoUrlInRefreshMetaTag < StandardError; end
 
       def load_following_refresh_tags(url, options = {}, redirect_count = 0, &block)
-        load(url, options) do |file|
+        load(url, **options) do |file|
           if (redirect_url = find_refresh_meta_tag_url(file.read))
             if redirect_count >= MAX_REDIRECT_COUNT
               raise TooManyRedirects, 'Too many redirects via refresh meta tags.'
