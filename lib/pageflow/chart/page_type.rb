@@ -8,7 +8,7 @@ module Pageflow
       end
 
       def json_seed_template
-        'pageflow/chart/page_type.json.jbuilder'
+        'pageflow/chart/page_type'
       end
 
       def file_types
