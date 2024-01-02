@@ -1,4 +1,5 @@
 require 'pageflow-public-i18n'
+require 'sprockets/rails'
 
 module Pageflow
   module Chart
