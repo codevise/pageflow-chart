@@ -1,10 +1,14 @@
 # CHANGELOG
 
-### Unreleased Changes
+### Version 2.6.0
 
-[Compare changes](https://github.com/codevise/pageflow-chart/compare/2-5-stable...master)
+2024-01-15
 
-None so far.
+[Compare changes](https://github.com/codevise/pageflow-chart/compare/2-5-stable...v2.6.0)
+
+- Support Pageflow 17
+  ([#64](https://github.com/codevise/pageflow-chart/pull/64),
+   [#63](https://github.com/codevise/pageflow-chart/pull/63))
 
 See
 [2-5-stable branch](https://github.com/codevise/pageflow-chart/blob/2-5-stable/CHANGELOG.md)
