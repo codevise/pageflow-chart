@@ -6,7 +6,7 @@ class InsertFileUsagesForScrapedSites < ActiveRecord::Migration[5.2]
 
     belongs_to :chapter, class_name: 'MigratedChapter'
 
-    serialize :configuration, JSON
+    serialize :configuration, coder: JSON
 
     def configuration
       super || {}
